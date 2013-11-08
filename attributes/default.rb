@@ -20,9 +20,9 @@ default[:wal_e][:pips] = [
 default[:wal_e][:git_version]         = "v0.6.5"
 
 default[:wal_e][:env_dir]             = '/etc/wal-e'
-default[:wal_e][:aws_access_key]      = 'AKIAIMFJABPVP5VSF36A'
-default[:wal_e][:aws_secret_key]      = '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'
-default[:wal_e][:s3_prefix]           = 's3://com.bitsighttech.backup/emwal'
+default[:wal_e][:aws_access_key]      = ''
+default[:wal_e][:aws_secret_key]      = ''
+default[:wal_e][:s3_prefix]           = ''
 
 default[:wal_e][:base_backup][:minute]  = '0'
 default[:wal_e][:base_backup][:hour]    = '0'
