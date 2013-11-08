@@ -32,4 +32,4 @@ default[:wal_e][:base_backup][:weekday] = '1'
 
 default[:wal_e][:user]                = 'postgres'
 default[:wal_e][:group]               = 'postgres'
-default[:wal_e][:pgdata_dir]          = '/var/lib/postgresql/9.1/main/'
+default[:wal_e][:pgdata_dir]          = '/var/lib/postgresql/9.2/main/'
