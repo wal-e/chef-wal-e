@@ -2,19 +2,18 @@
 # Cookbook Name:: wal-e
 # Recipe:: default
 
-include_recipe "python::pip"
+#install packages
+node[:wal_e][:packages].each do |pkg|
+  package pkg
+end
 
-package "python-setuptools"
-package "python-dev"
-package "lzop"
-package "pv"
-package "postgresql-client"
-package "libevent-dev"
-package "daemontools"
-
-python_pip "gevent"
-python_pip "argparse"
-python_pip "boto"
+#install python modules with pip unless overriden
+unless node[:wal_e][:pips].nil?
+  include_recipe "python::pip"
+  node[:wal_e][:pips].each do |pp|
+    python_pip "gevent"
+  end
+end
 
 code_path = "#{Chef::Config[:file_cache_path]}/wal-e"
 

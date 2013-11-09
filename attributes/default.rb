@@ -1,3 +1,22 @@
+
+
+default[:wal_e][:packages] = [
+  "python-setuptools",
+  "python-dev",
+  "lzop",
+  "pv",
+  "postgresql-client",
+  "libevent-dev",
+  "daemontools"
+
+]
+
+default[:wal_e][:pips] = [
+  "gevent",
+  "argparse",
+  "boto"
+]
+
 default[:wal_e][:git_version]         = "v0.6.5"
 
 default[:wal_e][:env_dir]             = '/etc/wal-e'
