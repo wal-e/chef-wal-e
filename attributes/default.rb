@@ -1,10 +1,10 @@
 
-
 default[:wal_e][:packages] = [
   "python-setuptools",
   "python-dev",
   "lzop",
   "pv",
+  "git",
   "postgresql-client",
   "libevent-dev",
   "daemontools"
