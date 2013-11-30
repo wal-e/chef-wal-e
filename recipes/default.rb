@@ -11,7 +11,7 @@ end
 unless node[:wal_e][:pips].nil?
   include_recipe "python::pip"
   node[:wal_e][:pips].each do |pp|
-    python_pip "gevent"
+    python_pip pp
   end
 end
 
