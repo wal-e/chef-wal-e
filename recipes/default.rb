@@ -3,8 +3,10 @@
 # Recipe:: default
 
 #install packages
-node[:wal_e][:packages].each do |pkg|
-  package pkg
+unless node[:wal_e][:packages].nil?
+  node[:wal_e][:packages].each do |pkg|
+    package pkg
+  end
 end
 
 #install python modules with pip unless overriden
@@ -53,6 +55,7 @@ end
 cron "wal_e_base_backup" do
   user node[:wal_e][:user]
   command "/usr/bin/envdir #{node[:wal_e][:env_dir]} /usr/local/bin/wal-e backup-push #{node[:wal_e][:pgdata_dir]}"
+  not_if { node[:wal_e][:base_backup][:disabled] }
 
   minute node[:wal_e][:base_backup][:minute]
   hour node[:wal_e][:base_backup][:hour]

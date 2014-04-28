@@ -3,12 +3,12 @@ default[:wal_e][:packages] = [
   "python-setuptools",
   "python-dev",
   "lzop",
+  "git",
   "pv",
   "git",
   "postgresql-client",
   "libevent-dev",
   "daemontools"
-
 ]
 
 default[:wal_e][:pips] = [
@@ -24,6 +24,7 @@ default[:wal_e][:aws_access_key]      = ''
 default[:wal_e][:aws_secret_key]      = ''
 default[:wal_e][:s3_prefix]           = ''
 
+default[:wal_e][:base_backup][:disabled]  = false
 default[:wal_e][:base_backup][:minute]  = '0'
 default[:wal_e][:base_backup][:hour]    = '0'
 default[:wal_e][:base_backup][:day]     = '*'
@@ -32,4 +33,4 @@ default[:wal_e][:base_backup][:weekday] = '1'
 
 default[:wal_e][:user]                = 'postgres'
 default[:wal_e][:group]               = 'postgres'
-default[:wal_e][:pgdata_dir]          = '/var/lib/postgresql/9.2/main/'
+default[:wal_e][:pgdata_dir]          = '/var/lib/postgresql/9.1/main/'
