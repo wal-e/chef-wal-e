@@ -17,7 +17,11 @@ default[:wal_e][:pips] = [
   "boto"
 ]
 
-default[:wal_e][:git_version]         = "v0.6.5"
+default[:wal_e][:install_method]      = 'source'
+default[:wal_e][:version]             = '0.6.5'
+
+# DEPRECATED ATTRIBUTE, for backwards compat. Use `:version` instead
+default[:wal_e][:git_version]         = "v#{wal_e[:version]}"
 
 default[:wal_e][:env_dir]             = '/etc/wal-e'
 default[:wal_e][:aws_access_key]      = ''
