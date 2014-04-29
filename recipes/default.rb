@@ -29,7 +29,7 @@ end
 
 git code_path do
   repository "https://github.com/wal-e/wal-e.git"
-  revision "v0.6.5"
+  revision node[:wal_e][:git_version]
   notifies :run, "bash[install_wal_e]"
 end
 
