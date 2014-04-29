@@ -5,7 +5,6 @@ default[:wal_e][:packages] = [
   "lzop",
   "git",
   "pv",
-  "git",
   "postgresql-client",
   "libevent-dev",
   "daemontools"
