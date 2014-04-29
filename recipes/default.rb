@@ -17,20 +17,28 @@ unless node[:wal_e][:pips].nil?
   end
 end
 
-code_path = "#{Chef::Config[:file_cache_path]}/wal-e"
+# Install from source or pip pacakge
+case node[:wal_e][:install_method]
+when 'source'
+  code_path = "#{Chef::Config[:file_cache_path]}/wal-e"
 
-bash "install_wal_e" do
-  cwd code_path
-  code <<-EOH
-    /usr/bin/python ./setup.py install
-  EOH
-  action :nothing
-end
+  bash "install_wal_e" do
+    cwd code_path
+    code <<-EOH
+      /usr/bin/python ./setup.py install
+    EOH
+    action :nothing
+  end
 
-git code_path do
-  repository "https://github.com/wal-e/wal-e.git"
-  revision "v0.6.5"
-  notifies :run, "bash[install_wal_e]"
+  git code_path do
+    repository "https://github.com/wal-e/wal-e.git"
+    revision node[:wal_e][:version]
+    notifies :run, "bash[install_wal_e]"
+  end
+when 'pip'
+  python_pip 'wal-e' do
+    version node[:wal_e][:version] if node[:wal_e][:version]
+  end
 end
 
 directory node[:wal_e][:env_dir] do
