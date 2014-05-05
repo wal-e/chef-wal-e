@@ -4,7 +4,13 @@
 
 #install packages
 unless node[:wal_e][:packages].nil?
-  node[:wal_e][:packages].each do |pkg|
+  pkgs = node[:wal_e][:packages]
+  # In older versions of Ubuntu, the package was called `git-core`
+  if node['platform'] == 'ubuntu' && node['platform_version'].to_f < 10.10
+    pkgs.map! { |pkg| pkg == 'git' ? 'git-core' : pkg }
+  end
+
+  pkgs.each do |pkg|
     package pkg
   end
 end
