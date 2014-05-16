@@ -31,7 +31,7 @@ when 'source'
   end
 
   git code_path do
-    repository "https://github.com/wal-e/wal-e.git"
+    repository node[:wal_e][:repository_url]
     revision node[:wal_e][:version]
     notifies :run, "bash[install_wal_e]"
   end
