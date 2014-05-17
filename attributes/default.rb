@@ -35,6 +35,8 @@ default[:wal_e][:base_backup][:day]     = '*'
 default[:wal_e][:base_backup][:month]   = '*'
 default[:wal_e][:base_backup][:weekday] = '1'
 
+default[:wal_e][:base_backup][:options] = nil
+
 default[:wal_e][:user]                = 'postgres'
 default[:wal_e][:group]               = 'postgres'
 default[:wal_e][:pgdata_dir]          = '/var/lib/postgresql/9.1/main/'
