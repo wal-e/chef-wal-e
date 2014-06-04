@@ -2,14 +2,14 @@
 # Cookbook Name:: wal-e
 # Recipe:: default
 
-#install packages
+# install packages
 unless node[:wal_e][:packages].nil?
   node[:wal_e][:packages].each do |pkg|
     package pkg
   end
 end
 
-#install python modules with pip unless overriden
+# install python modules with pip unless overriden
 unless node[:wal_e][:pips].nil?
   include_recipe "python::pip"
   node[:wal_e][:pips].each do |pp|
@@ -47,9 +47,9 @@ directory node[:wal_e][:env_dir] do
   mode    "0550"
 end
 
-vars = {'AWS_ACCESS_KEY_ID'     => node[:wal_e][:aws_access_key],
-        'AWS_SECRET_ACCESS_KEY' => node[:wal_e][:aws_secret_key],
-        'WALE_S3_PREFIX'        => node[:wal_e][:s3_prefix]}
+vars = { 'AWS_ACCESS_KEY_ID'     => node[:wal_e][:aws_access_key],
+         'AWS_SECRET_ACCESS_KEY' => node[:wal_e][:aws_secret_key],
+         'WALE_S3_PREFIX'        => node[:wal_e][:s3_prefix] }
 
 vars.each do |key, value|
   file "#{node[:wal_e][:env_dir]}/#{key}" do

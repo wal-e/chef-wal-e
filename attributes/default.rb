@@ -1,20 +1,29 @@
 
-default[:wal_e][:packages] = [
-  "python-setuptools",
-  "python-dev",
-  "lzop",
-  "git",
-  "pv",
-  "postgresql-client",
-  "libevent-dev",
-  "daemontools"
-]
+# List of packages WAL-E needs
+pkg_dependencies = %w(
+  daemontools
+  libevent-dev
+  lzop
+  postgresql-client
+  pv
+  python-dev
+  python-setuptools
+)
 
-default[:wal_e][:pips] = [
-  "gevent",
-  "argparse",
-  "boto"
-]
+# Handle older Ubuntu that had a different name
+if node['platform'] == 'ubuntu' && node['platform_version'].to_f < 10.10
+  pkg_dependencies.push 'git-core'
+else
+  pkg_dependencies.push 'git'
+end
+
+default[:wal_e][:packages] = pkg_dependencies
+
+default[:wal_e][:pips] = %w(
+  argparse
+  boto
+  gevent
+)
 
 default[:wal_e][:install_method]      = 'source'
 default[:wal_e][:repository_url]      = 'https://github.com/wal-e/wal-e.git'
