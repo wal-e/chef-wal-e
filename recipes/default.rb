@@ -14,7 +14,7 @@ unless node[:wal_e][:pips].nil?
   include_recipe "python::pip"
   node[:wal_e][:pips].each do |pp|
     python_pip pp do
-      user node[:wal_e][:user]
+      user node[:wal_e][:pip_user]
     end
   end
 end
@@ -40,7 +40,7 @@ when 'source'
 when 'pip'
   python_pip 'wal-e' do
     version node[:wal_e][:version] if node[:wal_e][:version]
-    user node[:wal_e][:user]
+    user node[:wal_e][:pip_user]
   end
 end
 
