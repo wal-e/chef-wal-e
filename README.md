@@ -25,10 +25,13 @@ Attributes
 
 - [:wal_e][:pgdata_dir] - Postgres data directory, override for your postgres version
 
+- [:wal_e][:virtualenv][:enabled] - Set to true to install wal-e inside of a python virtual environment. Be sure to update you archive commands appropriately.
+
 Recipes
 -------
 
 - default.rb - Installs wal-e
+- virtualenv.rb - Called by default if the virtualenv enabled attribute is set to true
 
 License and Authors
 -------------------
