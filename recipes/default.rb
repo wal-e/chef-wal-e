@@ -11,7 +11,7 @@ end
 
 # install python modules with pip unless overriden
 unless node[:wal_e][:pips].nil?
-  include_recipe "python::pip"
+  include_recipe 'python::pip'
   node[:wal_e][:pips].each do |pp|
     python_pip pp
   end
@@ -22,7 +22,7 @@ case node[:wal_e][:install_method]
 when 'source'
   code_path = "#{Chef::Config[:file_cache_path]}/wal-e"
 
-  bash "install_wal_e" do
+  bash 'install_wal_e' do
     cwd code_path
     code <<-EOH
       /usr/bin/python ./setup.py install
@@ -44,7 +44,7 @@ end
 directory node[:wal_e][:env_dir] do
   user    node[:wal_e][:user]
   group   node[:wal_e][:group]
-  mode    "0550"
+  mode    '0550'
 end
 
 vars = { 'AWS_ACCESS_KEY_ID'     => node[:wal_e][:aws_access_key],
@@ -60,7 +60,7 @@ vars.each do |key, value|
   end
 end
 
-cron "wal_e_base_backup" do
+cron 'wal_e_base_backup' do
   user node[:wal_e][:user]
   command "/usr/bin/envdir #{node[:wal_e][:env_dir]} /usr/local/bin/wal-e backup-push #{node[:wal_e][:base_backup][:options]} #{node[:wal_e][:pgdata_dir]}"
   not_if { node[:wal_e][:base_backup][:disabled] }
