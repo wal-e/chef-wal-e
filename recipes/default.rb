@@ -9,11 +9,27 @@ unless node[:wal_e][:packages].nil?
   end
 end
 
+#install the virtual environment if requested
+if node[:wal_e][:virtualenv][:enabled]
+  include_recipe 'wal-e::virtualenv'
+end
+
+activate = node[:wal_e][:virtualenv][:enabled] ? "#{node[:wal_e][:virtualenv][:helper]} #{node[:wal_e][:virtualenv][:activate]}" : ''
+wale_bin = node[:wal_e][:virtualenv][:enabled] ? "#{node[:wal_e][:virtualenv][:path]}/bin/wal-e" : '/usr/local/bin/wal-e'
+pip_environment =  node[:wal_e][:virtualenv][:enabled] ? node[:wal_e][:virtualenv][:path] : nil
+pip_user =  node[:wal_e][:virtualenv][:enabled] ? node[:wal_e][:user] : nil
+pip_group =  node[:wal_e][:virtualenv][:enabled] ? node[:wal_e][:group] : nil
+python_path =  node[:wal_e][:virtualenv][:enabled] ? "#{node[:wal_e][:virtualenv][:path]}/bin/python" : '/usr/local/bin/python'
+
 # install python modules with pip unless overriden
 unless node[:wal_e][:pips].nil?
   include_recipe 'python::pip'
   node[:wal_e][:pips].each do |pp|
-    python_pip pp
+    python_pip pp do
+      virtualenv pip_environment
+      user       pip_user
+      group      pip_group
+    end
   end
 end
 
@@ -25,7 +41,7 @@ when 'source'
   bash 'install_wal_e' do
     cwd code_path
     code <<-EOH
-      /usr/bin/python ./setup.py install
+     #{python_path} ./setup.py install
     EOH
     action :nothing
   end
@@ -33,11 +49,14 @@ when 'source'
   git code_path do
     repository node[:wal_e][:repository_url]
     revision node[:wal_e][:version]
-    notifies :run, "bash[install_wal_e]"
+    notifies :run, 'bash[install_wal_e]'
   end
 when 'pip'
   python_pip 'wal-e' do
-    version node[:wal_e][:version] if node[:wal_e][:version]
+    version    node[:wal_e][:version] if node[:wal_e][:version]
+    virtualenv pip_environment
+    user       pip_user
+    group      pip_group
   end
 end
 
@@ -56,13 +75,13 @@ vars.each do |key, value|
     content value
     user    node[:wal_e][:user]
     group   node[:wal_e][:group]
-    mode    "0440"
+    mode    '0440'
   end
 end
 
 cron 'wal_e_base_backup' do
   user node[:wal_e][:user]
-  command "/usr/bin/envdir #{node[:wal_e][:env_dir]} /usr/local/bin/wal-e backup-push #{node[:wal_e][:base_backup][:options]} #{node[:wal_e][:pgdata_dir]}"
+  command "/usr/bin/envdir #{node[:wal_e][:env_dir]} #{activate} #{wale_bin} backup-push #{node[:wal_e][:base_backup][:options]} #{node[:wal_e][:pgdata_dir]}"
   not_if { node[:wal_e][:base_backup][:disabled] }
 
   minute node[:wal_e][:base_backup][:minute]

@@ -47,6 +47,12 @@ default[:wal_e][:base_backup][:weekday] = '1'
 
 default[:wal_e][:base_backup][:options] = nil
 
+
+default[:wal_e][:virtualenv][:enabled] = false
+default[:wal_e][:virtualenv][:path] = '/var/virtualenvs/wal-e'
+default[:wal_e][:virtualenv][:activate] = "#{node[:wal_e][:virtualenv][:path]}/bin/activate"
+default[:wal_e][:virtualenv][:helper] = '/etc/postgresql/virtualenvhelper.sh'
+
 default[:wal_e][:user]                = 'postgres'
 default[:wal_e][:group]               = 'postgres'
 default[:wal_e][:pgdata_dir]          = '/var/lib/postgresql/9.1/main/'
