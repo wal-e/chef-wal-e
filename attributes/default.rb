@@ -49,4 +49,5 @@ default[:wal_e][:base_backup][:options] = nil
 
 default[:wal_e][:user]                = 'postgres'
 default[:wal_e][:group]               = 'postgres'
+default[:wal_e][:pip_user]            = 'root'
 default[:wal_e][:pgdata_dir]          = '/var/lib/postgresql/9.1/main/'
