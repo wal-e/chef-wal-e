@@ -50,9 +50,12 @@ directory node[:wal_e][:env_dir] do
   mode    "0550"
 end
 
-vars = { 'AWS_ACCESS_KEY_ID'     => node[:wal_e][:aws_access_key],
-         'AWS_SECRET_ACCESS_KEY' => node[:wal_e][:aws_secret_key],
-         'WALE_S3_PREFIX'        => node[:wal_e][:s3_prefix] }
+vars = {'WALE_S3_PREFIX'        => node[:wal_e][:s3_prefix] }
+
+if node[:wal_e][:aws_access_key]
+  vars['AWS_ACCESS_KEY_ID'] = node[:wal_e][:aws_access_key]
+  vars['AWS_SECRET_ACCESS_KEY'] = node[:wal_e][:aws_secret_key]
+end
 
 vars.each do |key, value|
   file "#{node[:wal_e][:env_dir]}/#{key}" do
