@@ -34,7 +34,7 @@ when 'source'
 
   git code_path do
     repository node[:wal_e][:repository_url]
-    revision node[:wal_e][:version]
+    revision node[:wal_e][:git_version]
     notifies :run, "bash[install_wal_e]"
   end
 when 'pip'

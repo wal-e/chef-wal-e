@@ -28,9 +28,8 @@ default[:wal_e][:pips] = %w(
 
 default[:wal_e][:install_method]      = 'source'
 default[:wal_e][:repository_url]      = 'https://github.com/wal-e/wal-e.git'
-default[:wal_e][:version]             = '0.7.0'
 
-# DEPRECATED ATTRIBUTE, for backwards compat. Use `:version` instead
+default[:wal_e][:version]             = '0.7.0'
 default[:wal_e][:git_version]         = "v#{wal_e[:version]}"
 
 default[:wal_e][:env_dir]             = '/etc/wal-e'
