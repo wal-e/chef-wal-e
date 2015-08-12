@@ -1,4 +1,7 @@
 
+## 0.2.0:
+* [iashwash] Adds virtualenv installation
+
 ## 0.1.3:
 * [iashwash] Adding an attribute to prevent crontab installation
 

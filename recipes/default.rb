@@ -9,12 +9,26 @@ unless node[:wal_e][:packages].nil?
   end
 end
 
+#install the virtual environment if requested
+if node[:wal_e][:virtualenv][:enabled]
+  include_recipe 'wal-e::virtualenv'
+end
+
+activate = node[:wal_e][:virtualenv][:enabled] ? "#{node[:wal_e][:virtualenv][:helper]} #{node[:wal_e][:virtualenv][:activate]}" : ''
+wale_bin = node[:wal_e][:virtualenv][:enabled] ? "#{node[:wal_e][:virtualenv][:path]}/bin/wal-e" : '/usr/local/bin/wal-e'
+pip_environment =  node[:wal_e][:virtualenv][:enabled] ? node[:wal_e][:virtualenv][:path] : nil
+pip_user =  node[:wal_e][:virtualenv][:enabled] ? node[:wal_e][:user] : node[:wal_e][:pip_user]
+pip_group =  node[:wal_e][:virtualenv][:enabled] ? node[:wal_e][:group] : nil
+python_path =  node[:wal_e][:virtualenv][:enabled] ? "#{node[:wal_e][:virtualenv][:path]}/bin/python" : '/usr/local/bin/python'
+
 # install python modules with pip unless overriden
 unless node[:wal_e][:pips].nil?
-  include_recipe "python::pip"
+  include_recipe 'python::pip'
   node[:wal_e][:pips].each do |pp|
     python_pip pp do
-      user node[:wal_e][:pip_user]
+      virtualenv pip_environment
+      user       pip_user
+      group      pip_group
     end
   end
 end
@@ -24,30 +38,32 @@ case node[:wal_e][:install_method]
 when 'source'
   code_path = "#{Chef::Config[:file_cache_path]}/wal-e"
 
-  bash "install_wal_e" do
+  bash 'install_wal_e' do
     cwd code_path
     code <<-EOH
-      /usr/bin/python ./setup.py install
+     #{python_path} ./setup.py install
     EOH
     action :nothing
   end
 
   git code_path do
     repository node[:wal_e][:repository_url]
-    revision node[:wal_e][:git_version]
-    notifies :run, "bash[install_wal_e]"
+    revision   node[:wal_e][:git_version]
+    notifies   :run, 'bash[install_wal_e]'
   end
 when 'pip'
   python_pip 'wal-e' do
-    version node[:wal_e][:version] if node[:wal_e][:version]
-    user node[:wal_e][:pip_user]
+    version    node[:wal_e][:version] if node[:wal_e][:version]
+    virtualenv pip_environment
+    user       pip_user
+    group      pip_group
+    notifies :run, "bash[install_wal_e]"
   end
-end
 
 directory node[:wal_e][:env_dir] do
   user    node[:wal_e][:user]
   group   node[:wal_e][:group]
-  mode    "0550"
+  mode    '0550'
 end
 
 vars = {'WALE_S3_PREFIX'        => node[:wal_e][:s3_prefix] }
@@ -62,13 +78,13 @@ vars.each do |key, value|
     content value
     user    node[:wal_e][:user]
     group   node[:wal_e][:group]
-    mode    "0440"
+    mode    '0440'
   end
 end
 
-cron "wal_e_base_backup" do
+cron 'wal_e_base_backup' do
   user node[:wal_e][:user]
-  command "/usr/bin/envdir #{node[:wal_e][:env_dir]} /usr/local/bin/wal-e backup-push #{node[:wal_e][:base_backup][:options]} #{node[:wal_e][:pgdata_dir]}"
+  command "/usr/bin/envdir #{node[:wal_e][:env_dir]} #{activate} #{wale_bin} backup-push #{node[:wal_e][:base_backup][:options]} #{node[:wal_e][:pgdata_dir]}"
   not_if { node[:wal_e][:base_backup][:disabled] }
 
   minute node[:wal_e][:base_backup][:minute]
