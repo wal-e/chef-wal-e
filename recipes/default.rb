@@ -17,7 +17,7 @@ end
 activate = node[:wal_e][:virtualenv][:enabled] ? "#{node[:wal_e][:virtualenv][:helper]} #{node[:wal_e][:virtualenv][:activate]}" : ''
 wale_bin = node[:wal_e][:virtualenv][:enabled] ? "#{node[:wal_e][:virtualenv][:path]}/bin/wal-e" : '/usr/local/bin/wal-e'
 pip_environment =  node[:wal_e][:virtualenv][:enabled] ? node[:wal_e][:virtualenv][:path] : nil
-pip_user =  node[:wal_e][:virtualenv][:enabled] ? node[:wal_e][:user] : nil
+pip_user =  node[:wal_e][:virtualenv][:enabled] ? node[:wal_e][:user] : node[:wal_e][:pip_user]
 pip_group =  node[:wal_e][:virtualenv][:enabled] ? node[:wal_e][:group] : nil
 python_path =  node[:wal_e][:virtualenv][:enabled] ? "#{node[:wal_e][:virtualenv][:path]}/bin/python" : '/usr/local/bin/python'
 
@@ -48,8 +48,8 @@ when 'source'
 
   git code_path do
     repository node[:wal_e][:repository_url]
-    revision node[:wal_e][:version]
-    notifies :run, 'bash[install_wal_e]'
+    revision   node[:wal_e][:git_version]
+    notifies   :run, 'bash[install_wal_e]'
   end
 when 'pip'
   python_pip 'wal-e' do
@@ -57,8 +57,8 @@ when 'pip'
     virtualenv pip_environment
     user       pip_user
     group      pip_group
+    notifies :run, "bash[install_wal_e]"
   end
-end
 
 directory node[:wal_e][:env_dir] do
   user    node[:wal_e][:user]
@@ -66,9 +66,12 @@ directory node[:wal_e][:env_dir] do
   mode    '0550'
 end
 
-vars = { 'AWS_ACCESS_KEY_ID'     => node[:wal_e][:aws_access_key],
-         'AWS_SECRET_ACCESS_KEY' => node[:wal_e][:aws_secret_key],
-         'WALE_S3_PREFIX'        => node[:wal_e][:s3_prefix] }
+vars = {'WALE_S3_PREFIX'        => node[:wal_e][:s3_prefix] }
+
+if node[:wal_e][:aws_access_key]
+  vars['AWS_ACCESS_KEY_ID'] = node[:wal_e][:aws_access_key]
+  vars['AWS_SECRET_ACCESS_KEY'] = node[:wal_e][:aws_secret_key]
+end
 
 vars.each do |key, value|
   file "#{node[:wal_e][:env_dir]}/#{key}" do
