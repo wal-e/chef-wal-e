@@ -1,6 +1,7 @@
 
 # List of packages WAL-E needs
 pkg_dependencies = %w(
+  build-essentials
   daemontools
   libevent-dev
   libxslt-dev
