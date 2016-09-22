@@ -35,6 +35,7 @@ default[:wal_e][:git_version]         = "v#{wal_e[:version]}"
 default[:wal_e][:env_dir]             = '/etc/wal-e'
 default[:wal_e][:aws_access_key]      = ''
 default[:wal_e][:aws_secret_key]      = ''
+default[:wal_e][:aws_region]          = ''
 default[:wal_e][:s3_prefix]           = ''
 
 default[:wal_e][:base_backup][:disabled]  = false
