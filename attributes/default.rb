@@ -3,6 +3,7 @@
 pkg_dependencies = %w(
   daemontools
   libevent-dev
+  libssl-dev
   libxslt-dev
   lzop
   postgresql-client
