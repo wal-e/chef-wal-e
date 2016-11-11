@@ -21,15 +21,18 @@ end
 default[:wal_e][:packages] = pkg_dependencies
 
 default[:wal_e][:pips] = %w(
-  argparse
-  boto
-  gevent
+  cryptography
+  gevent>=0.13.1
+  boto>=2.6.0
+  azure>=0.7.0
+  python-swiftclient>=1.8.0
+  python-keystoneclient>=0.4.2
 )
 
 default[:wal_e][:install_method]      = 'source'
 default[:wal_e][:repository_url]      = 'https://github.com/wal-e/wal-e.git'
 
-default[:wal_e][:version]             = '0.7.0'
+default[:wal_e][:version]             = '0.8.0'
 default[:wal_e][:git_version]         = "v#{wal_e[:version]}"
 
 default[:wal_e][:env_dir]             = '/etc/wal-e'
@@ -46,7 +49,12 @@ default[:wal_e][:base_backup][:weekday] = '1'
 
 default[:wal_e][:base_backup][:options] = nil
 
-default[:wal_e][:user]                = 'postgres'
-default[:wal_e][:group]               = 'postgres'
+if system('id postgres')
+  default[:wal_e][:user]                = 'postgres'
+  default[:wal_e][:group]               = 'postgres'
+else
+  default[:wal_e][:user]                = 'root'
+  default[:wal_e][:group]               = 'root'
+end
 default[:wal_e][:pip_user]            = 'root'
 default[:wal_e][:pgdata_dir]          = '/var/lib/postgresql/9.1/main/'

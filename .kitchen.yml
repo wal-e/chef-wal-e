@@ -1,0 +1,28 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_solo
+
+verifier:
+  name: inspec
+  sudo: true
+
+platforms:
+  - name: ubuntu-14.04
+
+suites:
+  - name: git
+    run_list:
+      - recipe[wal-e::default]
+    attributes:
+      wal_e:
+        install_method: 'source'
+
+  - name: pip
+    run_list:
+      - recipe[wal-e::default]
+    attributes:
+      wal_e:
+        install_method: 'pip'

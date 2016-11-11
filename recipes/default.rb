@@ -2,6 +2,8 @@
 # Cookbook Name:: wal-e
 # Recipe:: default
 
+include_recipe 'apt'
+
 # install packages
 unless node[:wal_e][:packages].nil?
   node[:wal_e][:packages].each do |pkg|

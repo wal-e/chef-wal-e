@@ -1,7 +1,4 @@
-# Put files/directories that should be ignored in this file when uploading
-# or sharing to the community site.
-# Lines that start with '# ' are comments.
-
+.kitchen
 # OS generated files #
 ######################
 .DS_Store
