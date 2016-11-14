@@ -19,6 +19,8 @@ suites:
     attributes:
       wal_e:
         install_method: 'source'
+        user: 'root'
+        group: 'root'
 
   - name: pip
     run_list:
@@ -26,3 +28,5 @@ suites:
     attributes:
       wal_e:
         install_method: 'pip'
+        user: 'root'
+        group: 'root'

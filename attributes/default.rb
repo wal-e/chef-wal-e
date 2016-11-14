@@ -50,12 +50,7 @@ default[:wal_e][:base_backup][:weekday] = '1'
 
 default[:wal_e][:base_backup][:options] = nil
 
-if system('id postgres')
-  default[:wal_e][:user]                = 'postgres'
-  default[:wal_e][:group]               = 'postgres'
-else
-  default[:wal_e][:user]                = 'root'
-  default[:wal_e][:group]               = 'root'
-end
+default[:wal_e][:user]                = 'postgres'
+default[:wal_e][:group]               = 'postgres'
 default[:wal_e][:pip_user]            = 'root'
 default[:wal_e][:pgdata_dir]          = '/var/lib/postgresql/9.1/main/'
