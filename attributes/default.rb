@@ -3,6 +3,7 @@
 pkg_dependencies = %w(
   daemontools
   libevent-dev
+  libffi-dev
   libssl-dev
   libxslt-dev
   lzop
