@@ -59,6 +59,14 @@ if node[:wal_e][:aws_access_key]
   vars['AWS_SECRET_ACCESS_KEY'] = node[:wal_e][:aws_secret_key]
 end
 
+if node[:wal_e][:s3_use_sigv4]
+  vars['S3_USE_SIGV4'] = node[:wal_e][:s3_use_sigv4]
+end
+
+if node[:wal_e][:wale_s3_endpoint]
+  vars['WALE_S3_ENDPOINT'] = node[:wal_e][:wale_s3_endpoint]
+end
+
 vars.each do |key, value|
   file "#{node[:wal_e][:env_dir]}/#{key}" do
     content value
