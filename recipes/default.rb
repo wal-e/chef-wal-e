@@ -67,6 +67,10 @@ if node[:wal_e][:wale_s3_endpoint]
   vars['WALE_S3_ENDPOINT'] = node[:wal_e][:wale_s3_endpoint]
 end
 
+if node[:wal_e][:ssl_cert_file]
+  vars['SSL_CERT_FILE'] = node[:wal_e][:ssl_cert_file]
+end
+
 vars.each do |key, value|
   file "#{node[:wal_e][:env_dir]}/#{key}" do
     content value
