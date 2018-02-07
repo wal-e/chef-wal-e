@@ -1,6 +1,6 @@
 describe command('wal-e version') do
   its('exit_status') { should eq 0 }
-  its('stdout') { should match('0.8.0') }
+  its('stdout') { should match('1.1.0') }
 end
 
 describe command('sudo crontab -l') do

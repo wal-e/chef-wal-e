@@ -11,11 +11,15 @@ unless node['wal_e']['packages'].nil?
   end
 end
 
+python_runtime 'wal-e' do
+  version '3'
+end
+
 # install python modules with pip unless overriden
 unless node['wal_e']['pips'].nil?
-  include_recipe "python::pip"
   node['wal_e']['pips'].each do |pp|
-    python_pip pp do
+    python_package pp[0] do
+      version pp[1]
       user node['wal_e']['pip_user']
     end
   end
@@ -29,7 +33,7 @@ when 'source'
   bash "install_wal_e" do
     cwd code_path
     code <<-EOH
-      /usr/bin/python ./setup.py install
+      /usr/bin/python3 ./setup.py install
     EOH
     action :nothing
   end
@@ -40,7 +44,7 @@ when 'source'
     notifies :run, "bash[install_wal_e]"
   end
 when 'pip'
-  python_pip 'wal-e' do
+  python_package 'wal-e' do
     version node['wal_e']['version'] if node['wal_e']['version']
     user node['wal_e']['pip_user']
   end

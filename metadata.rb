@@ -4,7 +4,7 @@ maintainer_email 'russ@garrett.co.uk'
 license          'MIT License'
 description      'Installs and configures the WAL-E PostgreSQL archiving system'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '0.3.0'
+version          '0.4.0'
 
-depends 'python'
+depends 'poise-python'
 depends 'apt'

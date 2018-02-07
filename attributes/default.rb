@@ -1,6 +1,7 @@
 
 # List of packages WAL-E needs
 pkg_dependencies = %w(
+  build-essential
   daemontools
   libevent-dev
   libffi-dev
@@ -9,8 +10,6 @@ pkg_dependencies = %w(
   lzop
   postgresql-client
   pv
-  python-dev
-  python-setuptools
 )
 
 # Handle older Ubuntu that had a different name
@@ -22,20 +21,21 @@ end
 
 default['wal_e']['packages'] = pkg_dependencies
 
-default['wal_e']['pips'] = %w(
-  cryptography
-  gevent>=0.13.1
-  boto>=2.6.0
-  azure>=0.7.0
-  python-swiftclient>=1.8.0
-  python-keystoneclient>=0.4.2
-)
+default['wal_e']['pips'] = [
+  ['setuptools', ''],
+  ['cryptography', ''],
+  ['gevent', '>=0.13.1'],
+  ['boto', '>=2.40.0'],
+  ['azure', '>=1.0.3'],
+  ['python-swiftclient', '>=3.0.0'],
+  ['python-keystoneclient', '>=3.0.0']
+]
 
 default['wal_e']['install_method']      = 'source'
 default['wal_e']['repository_url']      = 'https://github.com/wal-e/wal-e.git'
 
-default['wal_e']['version']             = '0.8.0'
-default['wal_e']['git_version']         = "v#{wal_e[:version]}"
+default['wal_e']['version']             = '1.1.0'
+default['wal_e']['git_version']         = "v#{node['wal_e']['version']}"
 
 default['wal_e']['env_dir']             = '/etc/wal-e'
 default['wal_e']['aws_access_key']      = ''
