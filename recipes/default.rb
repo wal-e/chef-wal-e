@@ -55,6 +55,7 @@ vars = {'WALE_S3_PREFIX'        => node[:wal_e][:s3_prefix] }
 if node[:wal_e][:aws_access_key]
   vars['AWS_ACCESS_KEY_ID'] = node[:wal_e][:aws_access_key]
   vars['AWS_SECRET_ACCESS_KEY'] = node[:wal_e][:aws_secret_key]
+  vars['AWS_REGION'] = node[:wal_e][:aws_region]
 end
 
 vars.each do |key, value|
