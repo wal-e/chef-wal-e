@@ -20,9 +20,9 @@ else
   pkg_dependencies.push 'git'
 end
 
-default[:wal_e][:packages] = pkg_dependencies
+default['wal_e']['packages'] = pkg_dependencies
 
-default[:wal_e][:pips] = %w(
+default['wal_e']['pips'] = %w(
   cryptography
   gevent>=0.13.1
   boto>=2.6.0
@@ -31,28 +31,28 @@ default[:wal_e][:pips] = %w(
   python-keystoneclient>=0.4.2
 )
 
-default[:wal_e][:install_method]      = 'source'
-default[:wal_e][:repository_url]      = 'https://github.com/wal-e/wal-e.git'
+default['wal_e']['install_method']      = 'source'
+default['wal_e']['repository_url']      = 'https://github.com/wal-e/wal-e.git'
 
-default[:wal_e][:version]             = '0.8.0'
-default[:wal_e][:git_version]         = "v#{wal_e[:version]}"
+default['wal_e']['version']             = '0.8.0'
+default['wal_e']['git_version']         = "v#{wal_e[:version]}"
 
-default[:wal_e][:env_dir]             = '/etc/wal-e'
-default[:wal_e][:aws_access_key]      = ''
-default[:wal_e][:aws_secret_key]      = ''
-default[:wal_e][:aws_region]          = ''
-default[:wal_e][:s3_prefix]           = ''
+default['wal_e']['env_dir']             = '/etc/wal-e'
+default['wal_e']['aws_access_key']      = ''
+default['wal_e']['aws_secret_key']      = ''
+default['wal_e']['aws_region']          = ''
+default['wal_e']['s3_prefix']           = ''
 
-default[:wal_e][:base_backup][:disabled]  = false
-default[:wal_e][:base_backup][:minute]  = '0'
-default[:wal_e][:base_backup][:hour]    = '0'
-default[:wal_e][:base_backup][:day]     = '*'
-default[:wal_e][:base_backup][:month]   = '*'
-default[:wal_e][:base_backup][:weekday] = '1'
+default['wal_e']['base_backup']['disabled']  = false
+default['wal_e']['base_backup']['minute']  = '0'
+default['wal_e']['base_backup']['hour']    = '0'
+default['wal_e']['base_backup']['day']     = '*'
+default['wal_e']['base_backup']['month']   = '*'
+default['wal_e']['base_backup']['weekday'] = '1'
 
-default[:wal_e][:base_backup][:options] = nil
+default['wal_e']['base_backup']['options'] = nil
 
-default[:wal_e][:user]                = 'postgres'
-default[:wal_e][:group]               = 'postgres'
-default[:wal_e][:pip_user]            = 'root'
-default[:wal_e][:pgdata_dir]          = '/var/lib/postgresql/9.1/main/'
+default['wal_e']['user']                = 'postgres'
+default['wal_e']['group']               = 'postgres'
+default['wal_e']['pip_user']            = 'root'
+default['wal_e']['pgdata_dir']          = '/var/lib/postgresql/9.1/main/'

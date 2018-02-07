@@ -5,24 +5,24 @@
 include_recipe 'apt'
 
 # install packages
-unless node[:wal_e][:packages].nil?
-  node[:wal_e][:packages].each do |pkg|
+unless node['wal_e']['packages'].nil?
+  node['wal_e']['packages'].each do |pkg|
     package pkg
   end
 end
 
 # install python modules with pip unless overriden
-unless node[:wal_e][:pips].nil?
+unless node['wal_e']['pips'].nil?
   include_recipe "python::pip"
-  node[:wal_e][:pips].each do |pp|
+  node['wal_e']['pips'].each do |pp|
     python_pip pp do
-      user node[:wal_e][:pip_user]
+      user node['wal_e']['pip_user']
     end
   end
 end
 
 # Install from source or pip pacakge
-case node[:wal_e][:install_method]
+case node['wal_e']['install_method']
 when 'source'
   code_path = "#{Chef::Config[:file_cache_path]}/wal-e"
 
@@ -35,60 +35,60 @@ when 'source'
   end
 
   git code_path do
-    repository node[:wal_e][:repository_url]
-    revision node[:wal_e][:git_version]
+    repository node['wal_e']['repository_url']
+    revision node['wal_e']['git_version']
     notifies :run, "bash[install_wal_e]"
   end
 when 'pip'
   python_pip 'wal-e' do
-    version node[:wal_e][:version] if node[:wal_e][:version]
-    user node[:wal_e][:pip_user]
+    version node['wal_e']['version'] if node['wal_e']['version']
+    user node['wal_e']['pip_user']
   end
 end
 
-directory node[:wal_e][:env_dir] do
-  user    node[:wal_e][:user]
-  group   node[:wal_e][:group]
+directory node['wal_e']['env_dir'] do
+  user    node['wal_e']['user']
+  group   node['wal_e']['group']
   mode    "0550"
 end
 
-vars = {'WALE_S3_PREFIX'        => node[:wal_e][:s3_prefix] }
+vars = {'WALE_S3_PREFIX'        => node['wal_e']['s3_prefix'] }
 
-if node[:wal_e][:aws_access_key]
-  vars['AWS_ACCESS_KEY_ID'] = node[:wal_e][:aws_access_key]
-  vars['AWS_SECRET_ACCESS_KEY'] = node[:wal_e][:aws_secret_key]
-  vars['AWS_REGION'] = node[:wal_e][:aws_region]
+if node['wal_e']['aws_access_key']
+  vars['AWS_ACCESS_KEY_ID'] = node['wal_e']['aws_access_key']
+  vars['AWS_SECRET_ACCESS_KEY'] = node['wal_e']['aws_secret_key']
+  vars['AWS_REGION'] = node['wal_e']['aws_region']
 end
 
-if node[:wal_e][:s3_use_sigv4]
-  vars['S3_USE_SIGV4'] = node[:wal_e][:s3_use_sigv4]
+if node['wal_e']['s3_use_sigv4']
+  vars['S3_USE_SIGV4'] = node['wal_e']['s3_use_sigv4']
 end
 
-if node[:wal_e][:wale_s3_endpoint]
-  vars['WALE_S3_ENDPOINT'] = node[:wal_e][:wale_s3_endpoint]
+if node['wal_e']['wale_s3_endpoint']
+  vars['WALE_S3_ENDPOINT'] = node['wal_e']['wale_s3_endpoint']
 end
 
-if node[:wal_e][:ssl_cert_file]
-  vars['SSL_CERT_FILE'] = node[:wal_e][:ssl_cert_file]
+if node['wal_e']['ssl_cert_file']
+  vars['SSL_CERT_FILE'] = node['wal_e']['ssl_cert_file']
 end
 
 vars.each do |key, value|
-  file "#{node[:wal_e][:env_dir]}/#{key}" do
+  file "#{node['wal_e']['env_di']}/#{key}" do
     content value
-    user    node[:wal_e][:user]
-    group   node[:wal_e][:group]
+    user    node['wal_e']['user']
+    group   node['wal_e']['group']
     mode    "0440"
   end
 end
 
 cron "wal_e_base_backup" do
-  user node[:wal_e][:user]
-  command "/usr/bin/envdir #{node[:wal_e][:env_dir]} /usr/local/bin/wal-e backup-push #{node[:wal_e][:base_backup][:options]} #{node[:wal_e][:pgdata_dir]}"
-  not_if { node[:wal_e][:base_backup][:disabled] }
+  user node['wal_e']['user']
+  command "/usr/bin/envdir #{node['wal_e']['env_dir']} /usr/local/bin/wal-e backup-push #{node['wal_e']['base_backup']['options']} #{node['wal_e']['pgdata_dir']}"
+  not_if { node['wal_e']['base_backup']['disabled'] }
 
-  minute node[:wal_e][:base_backup][:minute]
-  hour node[:wal_e][:base_backup][:hour]
-  day node[:wal_e][:base_backup][:day]
-  month node[:wal_e][:base_backup][:month]
-  weekday node[:wal_e][:base_backup][:weekday]
+  minute node['wal_e']['base_backup']['minute']
+  hour node['wal_e']['base_backup']['hour']
+  day node['wal_e']['base_backup']['day']
+  month node['wal_e']['base_backup']['month']
+  weekday node['wal_e']['base_backup']['weekday']
 end
