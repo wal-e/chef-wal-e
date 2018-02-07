@@ -30,6 +30,14 @@ Recipes
 
 - default.rb - Installs wal-e
 
+Tests
+-------
+```
+export PATH=./bin:$PATH
+bundle --binstubs
+kitchen test
+```
+
 License and Authors
 -------------------
 Authors:
@@ -39,3 +47,5 @@ Authors:
 Contributors:
 
 * Issa Ashwash (iashwash@bitsighttech.com)
+* Arash Zandi (arash.zandi@gmail.com)
+* Blake Irvin (blake.irvin@gmail.com)
